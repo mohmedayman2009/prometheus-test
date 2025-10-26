@@ -6,17 +6,20 @@ spring:
 
 info.component: API-Gateway
 
-endpoints:
-  restart:
-    enabled: true
-  shutdown:
-    enabled: true
-  health:
-    sensitive: false
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    prometheus:
+      enabled: true
 
 server:
-  contextPath: /
   port: 8080
+  servlet:
+    context-path: /
 
 zuul:
   ignoredServices: '*'
@@ -44,3 +47,4 @@ spring:
         instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
         healthCheckPath: /actuator/health
         healthCheckInterval: 15s
+

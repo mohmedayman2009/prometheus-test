@@ -12,20 +12,20 @@ info:
   artifact: service-two
   version: 5.0.0
 
-endpoints:
-  restart:
-    enabled: true
-  shutdown:
-    enabled: true
-  health:
-    sensitive: false
-
 management:
-  contextPath: /actuator
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    prometheus:
+      enabled: true
 
 server:
-  contextPath: /
   port: 8084
+  servlet:
+    context-path: /
 
 ---
 #DEFAULT CONFIGURATION
@@ -64,7 +64,7 @@ spring:
       discovery:
         hostName: service-two
         instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-        healthCheckPath: ${management.contextPath}/health
+        healthCheckPath: /actuator/health
         healthCheckInterval: 15s
     loadbalancer.ribbon.enabled: false
   datasource:
