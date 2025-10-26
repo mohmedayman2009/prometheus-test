@@ -186,6 +186,24 @@ services:
       - backend
 
   # -----------------------------
+  # Monitoring
+  # -----------------------------
+  prometheus:
+    image: prom/prometheus:v2.48.1
+    container_name: prometheus
+    hostname: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - api-gateway
+      - service-one
+      - service-two
+    networks:
+      - backend
+
+  # -----------------------------
   # Infrastructure Visualization
   # -----------------------------
   scope:
